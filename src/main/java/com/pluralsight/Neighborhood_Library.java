@@ -65,7 +65,7 @@ public class Neighborhood_Library {
                     showCheckedOutBooks(inventory, userInput);
                     break;
                 case 3:
-                    System.out.println("\nThank you for using our library. Goodbye!");
+                    System.out.println("\nCome back anytime, Stranger!");
                     break;
                 default:
                     System.out.println("Invalid selection. Please enter a valid option of 1 - 3.");
@@ -83,12 +83,12 @@ public class Neighborhood_Library {
         System.out.println("\n==============================");
         System.out.println("        Available Books");
         System.out.println("================================");
-        System.out.printf("%5s %-20 %-30s%n", "ID", "ISBN", "Title");
+        System.out.printf("%-5s %-20s %-30s%n", "ID", "ISBN", "Title");
         System.out.println("-".repeat(55));
 
         // Loop through and print only books that are "NOT" checked out
         for (int i = 0; i < inventory.length; i++) {
-            if (inventory[i].isCheckedOut()) {
+            if (!inventory[i].isCheckedOut()) {
                 System.out.printf("%-5d %-20s %-30s%n",
                         inventory[i].getId(),
                         inventory[i].getIsbn(),
@@ -96,7 +96,8 @@ public class Neighborhood_Library {
             }
         }
 
-        System.out.println("\nEnter a Book ID to checkout, or 0 to go back: ");
+        System.out.println("\nEnter a Book ID to checkout or 0 to go back ");
+        System.out.println();
         System.out.println("Enter your selection: ");
         int choice = Integer.parseInt(userInput.nextLine());
 
@@ -114,10 +115,10 @@ public class Neighborhood_Library {
                     System.out.print("Enter you name: ");
                     String name = userInput.nextLine();
                     inventory[i].checkOut(name);
-                    System.out.println("\n\"" + inventory[i].getTitle() + "\" has been checked out to " + name + ".");
+                    System.out.println("\n\"" + inventory[i].getTitle() + "\" has been checked out to " + name + ", is that all Stranger?");
                 }
                 else {
-                    System.out.println("\nSorry, that book is already checked out.");
+                    System.out.println("\nApologies Stranger, that book is already checked out.");
                 }
                 break;
             }
@@ -127,4 +128,61 @@ public class Neighborhood_Library {
         }
     }
 
+    // Show all checked out books
+    // ---------------------------------
+    public static void showCheckedOutBooks(Book[] inventory, Scanner userInput) {
+
+        System.out.println("\n============================");
+        System.out.println("     Checked Out Books");
+        System.out.println("============================");
+        System.out.printf("%-5s %-20s %-30s %-20s%n", "ID", "ISBN", "Title", "Checked Out To");
+        System.out.println("-".repeat(75));
+
+        // Loop through and print only books that "ARE" checked out
+        boolean anyCheckedOut = false;
+        for (int i = 0; i < inventory.length; i++) {
+            if (inventory[i].isCheckedOut()) {
+                anyCheckedOut = true;
+                System.out.printf("%-5d %-20s %-30s %-20s%n",
+                        inventory[i].getId(),
+                        inventory[i].getIsbn(),
+                        inventory[i].getTitle(),
+                        inventory[i].getCheckedOutTo());
+            }
+        }
+        // This handles cases where no books are checked out
+        if (!anyCheckedOut) {
+            System.out.println("No books are currently checked out. My wares are wide open for payin' customers!");
+        }
+
+        System.out.println("\nC) Check in a book");
+        System.out.println("X) Go back to the main menu");
+        System.out.print("Enter your selection: ");
+        String choice = userInput.nextLine();
+
+        if (choice.equalsIgnoreCase("c")) {
+            System.out.print("\nEnter the ID of the book you want to check in: ");
+            int id = Integer.parseInt(userInput.nextLine());
+
+            // Search for the book by ID and check it in
+            boolean found = false;
+            for (int i = 0; i < inventory.length; i++) {
+                if (inventory[i].getId() == id) {
+                    found = true;
+                    if (inventory[i].isCheckedOut()) {
+                        inventory[i].checkIn();
+                        System.out.println("\n\"" + inventory[i].getTitle() + "\" has been checked in, *laughs* Thank you!");
+                    }
+                    else {
+                        System.out.println("\nThat book is not currently checked out.");
+                    }
+                    break;
+                }
+            }
+            if (!found) {
+                System.out.println("\nNo book with that ID was found.");
+            }
+        }
+        // if X or anything else, go back to main menu
+    }
 }

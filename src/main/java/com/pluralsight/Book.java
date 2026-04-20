@@ -9,7 +9,7 @@ public class Book {
     private boolean isCheckedOut;
     private String checkedOutTo;
 
-    // Constructor
+    // Constructor for book object
     public Book(int id, String isbn, String title) {
         this.id = id;
         this.isbn = isbn;
@@ -19,7 +19,7 @@ public class Book {
 
     }
 
-    // Getters
+    // Getters for book id, isbn, title, isCheckedOut, and checkedOutTo
     public int getId() {
         return id;
     }
@@ -36,7 +36,7 @@ public class Book {
         return checkedOutTo;
     }
 
-    // Setters
+    // Setters for book id, isbn, title, isCheckedOut, and checkedOutTo
     public void setId(int id) {
         this.id = id;
     }
@@ -58,7 +58,7 @@ public class Book {
         this.checkedOutTo = name;
     }
 
-    public void checkIn(String name) {
+    public void checkIn() {
         this.isCheckedOut = false;
         this.checkedOutTo = "";
     }
